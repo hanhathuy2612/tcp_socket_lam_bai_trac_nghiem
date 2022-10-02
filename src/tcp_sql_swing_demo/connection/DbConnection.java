@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
 public class DbConnection {
-	private String connectionString = "jdbc:sqlserver://%s:%s;databaseName=FormSocket;";
+	private String connectionString = "jdbc:sqlserver://%s:%s;databaseName=trac_nghiem_socket;";
 	private static DbConnection instance = null;
 	private Connection cn = null;
 	

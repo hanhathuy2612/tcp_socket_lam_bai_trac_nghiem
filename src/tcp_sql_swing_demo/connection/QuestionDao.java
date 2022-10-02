@@ -9,7 +9,7 @@ import java.util.List;
 public class QuestionDao {
 	public List<Question> getQuestion() {
 		List<Question> questions = new ArrayList<>();
-		String query = "select * from Question order by stt asc";
+		String query = "select * from cau_hoi order by stt asc";
 		try {
 			Connection connection = DbConnection.getInstance().getConnection("localhost", "1433", "sa", "123456");
 			PreparedStatement ps = connection.prepareStatement(query);
@@ -17,8 +17,8 @@ public class QuestionDao {
 			;
 			while (rs.next()) {
 				int stt = rs.getInt("stt");
-				String question = rs.getString("question");
-				String answer = rs.getString("answer");
+				String question = rs.getString("noi_dung");
+				String answer = rs.getString("dap_an");
 				String A = rs.getString("A");
 				String B = rs.getString("B");
 				String C = rs.getString("C");

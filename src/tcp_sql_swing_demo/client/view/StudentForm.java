@@ -6,7 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import dao.SinhVienDao;
+import model.SinhVien;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -17,9 +22,10 @@ import java.awt.event.ActionEvent;
 public class StudentForm extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txthoten;
+	private JTextField txtmsv;
+	private JTextField txtsdt;
+	SinhVienDao sinhVienDao = new SinhVienDao();
 
 	/**
 	 * Launch the application.
@@ -47,57 +53,80 @@ public class StudentForm extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("THÔNG TIN SINH VIÊN");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(79, 10, 286, 39);
 		contentPane.add(lblNewLabel);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textField.setBounds(130, 104, 181, 24);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
+
+		txthoten = new JTextField();
+		txthoten.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txthoten.setBounds(130, 104, 181, 24);
+		contentPane.add(txthoten);
+		txthoten.setColumns(10);
+
 		JLabel lblNewLabel_1 = new JLabel("Họ tên");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1.setBounds(130, 73, 61, 24);
 		contentPane.add(lblNewLabel_1);
-		
+
 		JLabel lblNewLabel_1_1 = new JLabel("Mã sinh viên");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1_1.setBounds(130, 138, 132, 24);
 		contentPane.add(lblNewLabel_1_1);
-		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textField_1.setColumns(10);
-		textField_1.setBounds(130, 169, 181, 24);
-		contentPane.add(textField_1);
-		
+
+		txtmsv = new JTextField();
+		txtmsv.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtmsv.setColumns(10);
+		txtmsv.setBounds(130, 169, 181, 24);
+		contentPane.add(txtmsv);
+
 		JLabel lblNewLabel_1_2 = new JLabel("Số điện thoại");
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_1_2.setBounds(130, 203, 132, 24);
 		contentPane.add(lblNewLabel_1_2);
-		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textField_2.setColumns(10);
-		textField_2.setBounds(130, 234, 181, 24);
-		contentPane.add(textField_2);
-		
-		JButton btnNewButton = new JButton("Tiếp tục");
-		
-		btnNewButton.addActionListener(new ActionListener() {
+
+		txtsdt = new JTextField();
+		txtsdt.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtsdt.setColumns(10);
+		txtsdt.setBounds(130, 234, 181, 24);
+		contentPane.add(txtsdt);
+
+		JButton btntieptuc = new JButton("Tiếp tục");
+
+		btntieptuc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
-				// xử lý không được trống thông tin sinh viên
-				new MainForm().setVisible(true);
+
+				if (txthoten.getText().isEmpty() || txtmsv.getText().isEmpty() || txtsdt.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Bạn phải điền đủ thông tin để tiếp tục");
+				} else {
+
+					dispose();
+					SinhVien sinhVien = new SinhVien();
+					
+					new MainForm().setVisible(true);
+					sinhVien.setMaSinhVien(txtmsv.getText());
+					if(checkExist(Integer.parseInt(txtmsv.getText()))) {
+						System.out.print("Id exist, Nhập lại id:");
+						
+					}
+					sinhVien.setHoTen(txthoten.getText());
+					sinhVien.setSoDienThoai(txtsdt.getText());
+					sinhVienDao.add(sinhVien);
+				}
 			}
 		});
-		
-		btnNewButton.setBounds(175, 291, 85, 39);
-		contentPane.add(btnNewButton);
+
+		btntieptuc.setBounds(175, 291, 85, 39);
+		contentPane.add(btntieptuc);
 	}
+
+	public boolean checkExist(int id) {
+		var student = sinhVienDao.getById(id);
+		if (student != null)
+			return true;
+		return false;
+	}
+
 }

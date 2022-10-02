@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import model.KetQuaThi;
 import tcp_sql_swing_demo.client.ClientSocket;
 import tcp_sql_swing_demo.connection.Question;
 import tcp_sql_swing_demo.connection.QuestionDao;
@@ -68,10 +69,6 @@ public class MainForm extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
 	public MainForm() {
 		questions = questionDao.getQuestion();
 		System.out.println(questions.size());
@@ -264,16 +261,17 @@ public class MainForm extends JFrame {
 
 	private void sendResultToServer(Map<Integer, String> resource) throws IOException, ClassNotFoundException {
 		Socket socket = ClientSocket.getInstance().getSocket();
-		System.out.println(resource.get(1));
+		// gui ve server
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 		objectOutputStream.writeObject(resource);
-
+		
+		// nhan ket qua cham tu server
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-		String result = (String) inputStream.readObject();
+		KetQuaThi result = (KetQuaThi) inputStream.readObject();
+		
 		dispose();
 		
-		new ResultForm("TRẦN QUỐC THÁI", "0123456789", result)
-		.setVisible(true);
+		new ResultForm("TRẦN QUỐC THÁI", "0123456789", result).setVisible(true);
 		
 	}
 }
