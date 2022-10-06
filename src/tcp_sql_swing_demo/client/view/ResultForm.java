@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Color;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 public class ResultForm extends JFrame {
 
@@ -31,35 +33,53 @@ public class ResultForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel.setBounds(66, 83, 310, 90);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel txthoten = new JLabel("TRAN QUOC THAI");
+		txthoten.setBounds(10, 20, 142, 26);
+		panel.add(txthoten);
+		txthoten.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		JLabel txtmssv = new JLabel("1234567890");
+		txtmssv.setBounds(10, 56, 142, 34);
+		panel.add(txtmssv);
+		txtmssv.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBounds(123, 10, 174, 49);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
 		JLabel lblNewLabel = new JLabel("KẾT QUẢ");
+		lblNewLabel.setBounds(47, 10, 84, 34);
+		panel_1.add(lblNewLabel);
+		lblNewLabel.setBackground(Color.WHITE);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(167, 10, 108, 49);
-		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel(String.format("Số câu đúng: %s/10", correctNumber));
-		lblNewLabel_1.setForeground(Color.RED);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(91, 167, 245, 55);
-		contentPane.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("TRAN QUOC THAI");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_2.setBounds(133, 69, 142, 26);
-		contentPane.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_2_1 = new JLabel("12345678 90");
-		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_2_1.setBounds(133, 105, 142, 34);
-		contentPane.add(lblNewLabel_2_1);
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setBounds(66, 183, 310, 161);
+		contentPane.add(panel_2);
+		panel_2.setLayout(null);
 		
 		JLabel lblNewLabel_1_1 = new JLabel(String.format("%s Điểm", correctNumber));
+		lblNewLabel_1_1.setBounds(73, 85, 174, 49);
+		panel_2.add(lblNewLabel_1_1);
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1_1.setForeground(Color.RED);
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_1_1.setBounds(133, 232, 174, 49);
-		contentPane.add(lblNewLabel_1_1);
+		
+		JLabel lblNewLabel_1 = new JLabel(String.format("Số câu đúng: %s/10", correctNumber));
+		lblNewLabel_1.setBounds(31, 20, 245, 55);
+		panel_2.add(lblNewLabel_1);
+		lblNewLabel_1.setForeground(Color.RED);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 	}
-
 }
