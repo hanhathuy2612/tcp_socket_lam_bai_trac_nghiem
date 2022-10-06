@@ -10,21 +10,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import model.KetQuaThi;
 import tcp_sql_swing_demo.connection.Question;
-import tcp_sql_swing_demo.connection.QuestionDao;
+import tcp_sql_swing_demo.connection.CauHoiDao;
 
 public class Server {
-	private static QuestionDao questionDao = new QuestionDao();
-	
+	private static CauHoiDao questionDao = new CauHoiDao();
+
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		Map<Integer, String> sentence_from_client = new HashMap<>();
-		String sentence_to_client;
+		Map<String, String> sentence_to_client = new HashMap<>();
 
 		ServerSocket welcomeSocket = new ServerSocket(6543);
 		System.out.println("Conneting");
 		Socket connectionSocket = welcomeSocket.accept();
 		System.out.println("Conneted");
-		
+
 		while (true) {
 			try {
 				sentence_from_client = (Map<Integer, String>) receiveFromClient(connectionSocket);
@@ -41,23 +42,30 @@ public class Server {
 		}
 	}
 
-	private static String hanleData(Map<Integer, String> data) {
+	private static Map<String, String> hanleData(Map<Integer, String> data) {
 		List<Question> questions = questionDao.getQuestion();
 		int current = 1;
 		int correct = 0;
-		for (Question question: questions) {
-			if(data.containsKey(current)) {
+		for (Question question : questions) {
+			if (data.containsKey(current)) {
 				System.out.println(data.get(current));
 				System.out.println(question.getAnswer());
-				
-				if(data.get(current).equalsIgnoreCase(question.getAnswer())) {
+
+				if (data.get(current).equalsIgnoreCase(question.getAnswer())) {
 					correct = correct + 1;
 				}
 			}
 			current++;
 		}
+
 		System.out.println("numberOfCorrect: " + correct);
-		return "" + correct;
+
+		Map<String, String> map = new HashMap<>();
+		map.put("diem", "" + correct);
+//		KetQuaThi ketQuaThi = new KetQuaThi();
+//		ketQuaThi.setDiem(correct);
+
+		return map;
 	}
 
 	private static Object receiveFromClient(Socket socket) throws IOException, ClassNotFoundException {
