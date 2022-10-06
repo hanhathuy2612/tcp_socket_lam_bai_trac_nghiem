@@ -102,18 +102,20 @@ public class StudentForm extends JFrame {
 					JOptionPane.showMessageDialog(null, "Bạn phải điền đủ thông tin để tiếp tục");
 				} else {
 
-					dispose();
-					SinhVien sinhVien = new SinhVien();
-					
-					new MainForm().setVisible(true);
-					sinhVien.setMaSinhVien(txtmsv.getText());
-					if(checkExist(Integer.parseInt(txtmsv.getText()))) {
-						System.out.print("Id exist, Nhập lại id:");
+					if (checkExist(txtmsv.getText())) {
+						JOptionPane.showMessageDialog(null, "Ma sinh vien da ton tai, vui long nhap lai");
+					} else {
+						SinhVien sinhVien = new SinhVien();
+						sinhVien.setMaSinhVien(txtmsv.getText());
+						sinhVien.setHoTen(txthoten.getText());
+						sinhVien.setSoDienThoai(txtsdt.getText());
+
+						sinhVienDao.add(sinhVien);
 						
+						new MainForm().setVisible(true);
+						dispose();
 					}
-					sinhVien.setHoTen(txthoten.getText());
-					sinhVien.setSoDienThoai(txtsdt.getText());
-					sinhVienDao.add(sinhVien);
+
 				}
 			}
 		});
@@ -122,8 +124,8 @@ public class StudentForm extends JFrame {
 		contentPane.add(btntieptuc);
 	}
 
-	public boolean checkExist(int id) {
-		var student = sinhVienDao.getById(id);
+	public boolean checkExist(String mssv) {
+		SinhVien student = sinhVienDao.getByMssv(mssv);
 		if (student != null)
 			return true;
 		return false;

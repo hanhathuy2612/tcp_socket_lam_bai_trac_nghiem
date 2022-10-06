@@ -29,7 +29,7 @@ public class SinhVienDao {
 		}
 		return kq;
 	}
-	
+
 	public SinhVien getById(int id) {
 		List<SinhVien> students = new ArrayList<>();
 		try {
@@ -41,9 +41,31 @@ public class SinhVienDao {
 				String mssv = rs.getString("ma_sinh_vien");
 				String hoTen = rs.getString("ho_ten");
 				String soDienThoai = rs.getString("so_dien_thoai");
-			
+
 				float dtb = rs.getFloat("DTB");
-				return new SinhVien(mssv,hoTen,soDienThoai);
+				return new SinhVien(mssv, hoTen, soDienThoai);
+			}
+
+			rs.close();
+			ps.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public SinhVien getByMssv(String mssv) {
+		List<SinhVien> students = new ArrayList<>();
+		try {
+			String query = "select * from sinh_vien where ma_sinh_vien=?";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setString(1, mssv);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				String hoTen = rs.getString("ho_ten");
+				String soDienThoai = rs.getString("so_dien_thoai");
+				
+				return new SinhVien(mssv, hoTen, soDienThoai);
 			}
 
 			rs.close();

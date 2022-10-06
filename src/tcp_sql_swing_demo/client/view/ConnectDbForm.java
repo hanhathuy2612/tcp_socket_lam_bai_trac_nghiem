@@ -81,6 +81,7 @@ public class ConnectDbForm extends JFrame {
 				String password = txtPassword.getText();
 				
 				boolean isConnected = DbConnection.getInstance().isConnected(host, port, username, password);
+				
 				if (!isConnected) {
 					JOptionPane.showMessageDialog(null, "Connection fail");
 				}else {

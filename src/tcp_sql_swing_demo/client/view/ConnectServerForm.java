@@ -78,10 +78,9 @@ public class ConnectServerForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String host = txtHost.getText();
 				int port = Integer.parseInt(txtPort.getText());
+				
 				try {
-					
 					ClientSocket.getInstance().setSocket(host, port);
-					
 				} catch (UnknownHostException e1) {
 					JOptionPane.showMessageDialog(null, "HOST NOT FOUND");
 					return;

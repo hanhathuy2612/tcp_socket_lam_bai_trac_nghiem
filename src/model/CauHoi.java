@@ -9,6 +9,20 @@ public class CauHoi {
 	private String B;
 	private String C;
 	private String D;
+	
+	
+
+	public CauHoi(int id, int stt, String noiDung, String dapAn, String a, String b, String c, String d) {
+		super();
+		this.id = id;
+		this.stt = stt;
+		this.noiDung = noiDung;
+		this.dapAn = dapAn;
+		A = a;
+		B = b;
+		C = c;
+		D = d;
+	}
 
 	public int getId() {
 		return id;

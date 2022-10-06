@@ -6,10 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import model.CauHoi;
 import model.KetQuaThi;
 import tcp_sql_swing_demo.client.ClientSocket;
 import tcp_sql_swing_demo.connection.Question;
-import tcp_sql_swing_demo.connection.QuestionDao;
+import tcp_sql_swing_demo.connection.CauHoiDao;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -45,13 +46,13 @@ public class MainForm extends JFrame {
 	private JLabel lbCounter;
 	private JLabel lbNextQuestion;
 
-	private QuestionDao questionDao = new QuestionDao();
+	private CauHoiDao questionDao = new CauHoiDao();
 
 	private Timer timer;
 	private int count = 10;
 	private int maxCount = 30;
 	private int currentQuestion = 1;
-	private List<Question> questions = new ArrayList<>();
+	private List<CauHoi> questions = new ArrayList<>();
 	private Map<Integer, String> resource = new HashMap<>();
 
 	/**
@@ -69,6 +70,7 @@ public class MainForm extends JFrame {
 			}
 		});
 	}
+
 	public MainForm() {
 		questions = questionDao.getQuestion();
 		System.out.println(questions.size());
@@ -201,16 +203,19 @@ public class MainForm extends JFrame {
 	}
 
 	private void nextQuestion(int currentQuestion) {
-		
+
 		if (currentQuestion > questions.size()) {
 			return;
 		}
-		
-		Optional<Question> questionOpt = questions.stream().filter(x -> x.getStt() == currentQuestion).findFirst();
-		Question question = questionOpt.get();
+
+		Optional<CauHoi> questionOpt = questions
+				.stream()
+				.filter(x -> x.getStt() == currentQuestion)
+				.findFirst();
+		CauHoi question = questionOpt.get();
 
 		count = maxCount;
-		txtQuestion.setText(String.format("Câu %d: %s", question.getStt(), question.getQuestion()));
+		txtQuestion.setText(String.format("Câu %d: %s", question.getStt(), question.getNoiDung()));
 		rdbtnA.setText("A." + question.getA());
 		rdbtnB.setText("B." + question.getB());
 		rdbtnC.setText("C." + question.getC());
@@ -225,14 +230,14 @@ public class MainForm extends JFrame {
 		if (currentQuestion > questions.size()) {
 			sendResultToServer(resource);
 		}
-		
+
 		count = maxCount;
 		nextQuestion(currentQuestion);
 		timer.restart();
 	}
 
 	protected void aceptAnswer() throws ClassNotFoundException, IOException {
-		
+
 		if (currentQuestion > questions.size()) {
 			sendResultToServer(resource);
 		}
@@ -249,10 +254,8 @@ public class MainForm extends JFrame {
 			answer = "D";
 
 		resource.put(currentQuestion, answer);
-		
+
 		currentQuestion++;
-		
-		
 
 		count = maxCount;
 		nextQuestion(currentQuestion);
@@ -264,14 +267,14 @@ public class MainForm extends JFrame {
 		// gui ve server
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 		objectOutputStream.writeObject(resource);
-		
+
 		// nhan ket qua cham tu server
 		ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-		KetQuaThi result = (KetQuaThi) inputStream.readObject();
-		
+		var map = (Map<String, String>) inputStream.readObject();
+
 		dispose();
-		
-		new ResultForm("TRẦN QUỐC THÁI", "0123456789", result).setVisible(true);
-		
+
+		new ResultForm("TRẦN QUỐC THÁI", "0123456789", "" + map.get("diem")).setVisible(true);
+
 	}
 }
